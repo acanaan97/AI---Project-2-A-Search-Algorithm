@@ -36,7 +36,15 @@ def getInput():
                 blacklist.append(x)
                 flag = True
             else:
-                print("Invalid city. Try again below.")
+                print("Invalid city: " + x + ". Try again below.")
+                flag = False
+                break
 
 
     return start,end, blacklist
+
+def straightlineDist(x1, y1, x2, y2):
+    return 0
+
+def step_by_step():
+        return 0

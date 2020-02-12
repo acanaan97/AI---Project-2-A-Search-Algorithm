@@ -17,5 +17,7 @@ def init():
         if temp2[0] == "END":
              break # If at the last line in the file
         connects = temp2[2:] # Store each entry from index 2 onward (but not including index 1, which is the number of connections per node)
-        connects.sort() # Sort our 'edge list' alphabetically, allows us to choose alphanumerically more easily
         Connections[temp2[0]] = connects # Store the connections to the associated node dictionary
+
+
+
