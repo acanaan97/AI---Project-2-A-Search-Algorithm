@@ -2,6 +2,7 @@
 Andrew Canaan (no partner)
 U41572685
 Programming Project 2 - Introduction to Artificial Intelligence
+Python 3.8.1
 
 To execute this code:
 -Navigate to the directory where the files are held via command line.
