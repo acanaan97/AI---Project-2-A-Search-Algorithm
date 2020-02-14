@@ -18,6 +18,3 @@ def init():
              break # If at the last line in the file
         connects = temp2[2:] # Store each entry from index 2 onward (but not including index 1, which is the number of connections per node)
         Connections[temp2[0]] = connects # Store the connections to the associated node dictionary
-
-
-

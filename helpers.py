@@ -30,16 +30,18 @@ def getInput():
     flag = False
     while(flag == False):
         exclusion = input("Name cities to exclude in a comma-separated list (no spaces): ")
-        exclusions = exclusion.split(",")
-        for x in exclusions:
-            if x in filehandler.Locations.keys():
-                blacklist.append(x)
-                flag = True
-            else:
-                print("Invalid city: " + x + ". Try again below.")
-                flag = False
-                break
-
+        if(exclusion != ""):
+            exclusions = exclusion.split(",")
+            for x in exclusions:
+                if x in filehandler.Locations.keys():
+                    blacklist.append(x)
+                    flag = True
+                else:
+                    print("Invalid city: " + x + ". Try again below. If there are no cities, leave blank.")
+                    flag = False
+                    break
+        else:
+            flag = True
 
     return start,end, blacklist
 
@@ -47,4 +49,4 @@ def straightlineDist(x1, y1, x2, y2):
     return 0
 
 def step_by_step():
-        return 0
+    return 0
