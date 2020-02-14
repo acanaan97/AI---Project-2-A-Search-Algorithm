@@ -40,6 +40,8 @@ def getInput():
                     print("Invalid city: " + x + ". Try again below. If there are no cities, leave blank.")
                     flag = False
                     break
+        else:
+            flag = True
 
     return start,end, blacklist
 

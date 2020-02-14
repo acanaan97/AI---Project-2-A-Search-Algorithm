@@ -22,7 +22,7 @@ for y in filehandler.Connections: # to remove any connections in other keys
         if z in temp[2]:
             filehandler.Connections[y].remove(z)
 
-strinput = input("Would you like to search Step-by-Step? Y/N") 
+strinput = input("Would you like to search Step-by-Step? Y/N\n") 
 if strinput == 'Y':
     helpers.step_by_step()
 
@@ -36,23 +36,27 @@ if(temp == "Y" or temp == "y"):
       straightLine = True
       
 if(straightLine == True):
-      startingX = int(filehandler.Locations[start][0])
-      startingY = int(filehandler.Locations[start][1])
+      startingX = int(filehandler.Locations[end][0])
+      startingY = int(filehandler.Locations[end][1])
       for i in filehandler.Locations:
             if(i != "END"):
                   endingX = int(filehandler.Locations[i][0])
-                  endingY = int(filehandler.Locations[i][[1])
+                  endingY = int(filehandler.Locations[i][1])
                   distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
                   heuristic[i] = distance
       path = [start]
       visited = [start]
 
       while(path[-1] != end):
-            change = 0  # flag to indicate whether any unvisited neighbors were found
+            change = 0  
+      # flag to indicate whether any unvisited neighbors were found
       # iterate over neighbors of current node
             for x in filehandler.Connections[path[-1]]:
     # if neighbor has not been visited yet, add neighbor to the path
                   if x not in visited:
+                        for y in filehandler.Connections[x][0]:
+                            print("TESTING: " + x + "\n") 
+                        print("Restart")    
                         curr = x
                         visited.append(x)
                         path.append(x)
@@ -61,3 +65,28 @@ if(straightLine == True):
   # if no unvisited neighbors were found, pop current node from the stack
             if change == 0:
                   path.pop()
+                  
+                  
+#                   for i in range(0, len(path)-1):
+#           #reinitializes the array each time it loops.
+#       points = []
+      
+#       #gets the first element in the pair
+#       for value in util.locations[path[i]]:
+#             points.append(value)
+#       #gets the second element in the pair
+#       for value in util.locations[path[i+1]]:
+#             points.append(value)
+      
+#       #assigns the corresponding variable
+#       x1 = int(points[0])
+#       x2 = int(points[2])
+#       y1 = int(points[1])
+#       y2 = int(points[3])
+      
+#       #calculates distance
+#       distance = math.sqrt((x2-x1)**2+(y2-y1)**2)
+#       print(path[i] + " to " + path[i+1] + " length " + "%.2f" %distance)
+#       sum = sum + distance
+
+# print("Total path length %.2f"  %sum)
