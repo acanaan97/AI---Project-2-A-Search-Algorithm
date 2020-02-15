@@ -22,9 +22,10 @@ for y in filehandler.Connections: # to remove any connections in other keys
         if z in temp[2]:
             filehandler.Connections[y].remove(z)
 
+stepByStep = False
 strinput = input("Would you like to search Step-by-Step? Y/N\n") 
-if strinput == 'Y':
-    helpers.step_by_step()
+if (strinput == 'Y' or strinput == 'y'):
+    stepByStep = True
 
 heuristic = {}
 path = []
@@ -36,59 +37,116 @@ if(temp == "Y" or temp == "y"):
       straightLine = True
       
 if(straightLine == True):
-      startingX = int(filehandler.Locations[end][0])
-      startingY = int(filehandler.Locations[end][1])
-      for i in filehandler.Locations:
-            if(i != "END"):
-                  endingX = int(filehandler.Locations[i][0])
-                  endingY = int(filehandler.Locations[i][1])
-                  distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
-                  heuristic[i] = distance
-      path = [start]
-      visited = [start]
-
-      while(path[-1] != end): #While the last varaible in the path structure is not the ending city
-            change = 0
-            temp = filehandler.Connections[path[-1]] #a temp structure that has all the connections of the current city
-            print("TEMP: ", temp)
-            minCity = ""
-            minDistance = 999999 #filler big number
-            #Get the X and Y of the current city
-            startingX = int(filehandler.Locations[path[-1]][0]) 
-            startingY = int(filehandler.Locations[path[-1]][1])
-            #repeat for every connecting city
-            for i in temp:
-                  #if you already went to the city, continue with the next city
-                  if(i not in visited):
-                        print("Seeing what is in I", i)
-                        #X and Y of the next connecting city
+      if(stepByStep == True):
+            totalDistance = 0;
+            startingX = int(filehandler.Locations[end][0])
+            startingY = int(filehandler.Locations[end][1])
+            for i in filehandler.Locations:
+                  if(i != "END"):
                         endingX = int(filehandler.Locations[i][0])
                         endingY = int(filehandler.Locations[i][1])
                         distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
-                        distance = distance + heuristic[path[-1]] #add the distance to the city with the straight line distance calculated before
-                        print("DISTANCE: ", distance)
-                        #compare the distance calculated with the current smallest distance
-                        if(distance < minDistance):
-                              minDistance = distance
-                              minCity = i
-                        print("MINCITY: ", minCity)
-                  
-            if(minCity not in visited):
-                  visited.append(minCity)
-                  path.append(minCity)
-                  change =1
-                        #If dead end, pop and renavigate
-            if(change ==0):
-                  path.pop()
-            #if that city is not in the visited structure, go there
-            # if(minCity not in visited):
-            #       visited.append(minCity)
-            #       path.append(minCity)
-            #       change ==1
-            
+                        heuristic[i] = distance
+            path = [start]
+            visited = [start]
 
-print(visited)
-print(path)
+            while(path[-1] != end): #While the last varaible in the path structure is not the ending city
+                  change = 0
+                  print("City selected: ", path[-1])
+                  temp = filehandler.Connections[path[-1]] #a temp structure that has all the connections of the current city
+                  print("Possible cities to where to travel: ", temp)
+                  minCity = path[-1]
+                  minDistance = 999999 #filler big number
+                  #Get the X and Y of the current city
+                  startingX = int(filehandler.Locations[path[-1]][0]) 
+                  startingY = int(filehandler.Locations[path[-1]][1])
+                  #repeat for every connecting city
+                  for i in temp:
+                        if (i == end):
+                              endingX = int(filehandler.Locations[i][0])
+                              endingY = int(filehandler.Locations[i][1])
+                              distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                              distance = distance + heuristic[path[-1]] #add the distance to the city with the straight line distance calculated before
+                              print(i, "is this far away: ", distance)
+                              minCity = i
+                              visited.append(i)
+                              path.append(i)
+                              change =1
+                              break
+                        #if you already went to the city, continue with the next city
+                        if(i not in visited):
+                              #X and Y of the next connecting city
+                              endingX = int(filehandler.Locations[i][0])
+                              endingY = int(filehandler.Locations[i][1])
+                              distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                              distance = distance + heuristic[path[-1]] #add the distance to the city with the straight line distance calculated before
+                              print(i, "is this far away: ", distance)
+                              #compare the distance calculated with the current smallest distance
+                              if(distance < minDistance):
+                                    minDistance = distance
+                                    minCity = i
+                  print("Selecting: ", minCity)
+                  totalDistance = totalDistance + minDistance
+                  if(minCity not in visited):
+                        visited.append(minCity)
+                        path.append(minCity)
+                        change =1
+                              #If dead end, pop and renavigate
+                  if(change ==0):
+                        path.pop()
+
+      else:
+            totalDistance = 0
+            startingX = int(filehandler.Locations[end][0])
+            startingY = int(filehandler.Locations[end][1])
+            for i in filehandler.Locations:
+                  if(i != "END"):
+                        endingX = int(filehandler.Locations[i][0])
+                        endingY = int(filehandler.Locations[i][1])
+                        distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                        heuristic[i] = distance
+            path = [start]
+            visited = [start]
+
+            while(path[-1] != end): #While the last varaible in the path structure is not the ending city
+                  change = 0
+                  temp = filehandler.Connections[path[-1]] #a temp structure that has all the connections of the current city
+                  minCity = path[-1]
+                  minDistance = 999999 #filler big number
+                  #Get the X and Y of the current city
+                  startingX = int(filehandler.Locations[path[-1]][0]) 
+                  startingY = int(filehandler.Locations[path[-1]][1])
+                  #repeat for every connecting city
+                  for i in temp:
+                        if (i == end):
+                              minCity = i
+                              visited.append(i)
+                              path.append(i)
+                              change =1
+                              break
+                        #if you already went to the city, continue with the next city
+                        if(i not in visited):
+                              #X and Y of the next connecting city
+                              endingX = int(filehandler.Locations[i][0])
+                              endingY = int(filehandler.Locations[i][1])
+                              distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                              distance = distance + heuristic[path[-1]] #add the distance to the city with the straight line distance calculated before
+                              #compare the distance calculated with the current smallest distance
+                              if(distance < minDistance):
+                                    minDistance = distance
+                                    minCity = i
+                  totalDistance = totalDistance + minDistance
+                  if(minCity not in visited):
+                        visited.append(minCity)
+                        path.append(minCity)
+                        change =1
+                              #If dead end, pop and renavigate
+                  if(change ==0):
+                        path.pop()
+            
+print("Total Distance Travelled: ", totalDistance)
+print("Visited Path: ", visited)
+print("Total Path: ",path)
 #       while(path[-1] != end):
 #             change = 0  
 #       # flag to indicate whether any unvisited neighbors were found
