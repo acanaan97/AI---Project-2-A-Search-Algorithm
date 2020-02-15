@@ -47,24 +47,68 @@ if(straightLine == True):
       path = [start]
       visited = [start]
 
-      while(path[-1] != end):
-            change = 0  
-      # flag to indicate whether any unvisited neighbors were found
-      # iterate over neighbors of current node
-            for x in filehandler.Connections[path[-1]]:
-    # if neighbor has not been visited yet, add neighbor to the path
-                  if x not in visited:
-                        for y in filehandler.Connections[x][0]:
-                            print("TESTING: " + x + "\n") 
-                        print("Restart")    
-                        curr = x
-                        visited.append(x)
-                        path.append(x)
-                        change = 1
-                        break 
-  # if no unvisited neighbors were found, pop current node from the stack
-            if change == 0:
+      while(path[-1] != end): #While the last varaible in the path structure is not the ending city
+            change = 0
+            temp = filehandler.Connections[path[-1]] #a temp structure that has all the connections of the current city
+            print("TEMP: ", temp)
+            minCity = ""
+            minDistance = 999999 #filler big number
+            #Get the X and Y of the current city
+            startingX = int(filehandler.Locations[path[-1]][0]) 
+            startingY = int(filehandler.Locations[path[-1]][1])
+            #repeat for every connecting city
+            for i in temp:
+                  #if you already went to the city, continue with the next city
+                  if(i not in visited):
+                        print("Seeing what is in I", i)
+                        #X and Y of the next connecting city
+                        endingX = int(filehandler.Locations[i][0])
+                        endingY = int(filehandler.Locations[i][1])
+                        distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                        distance = distance + heuristic[path[-1]] #add the distance to the city with the straight line distance calculated before
+                        print("DISTANCE: ", distance)
+                        #compare the distance calculated with the current smallest distance
+                        if(distance < minDistance):
+                              minDistance = distance
+                              minCity = i
+                        print("MINCITY: ", minCity)
+                  
+            if(minCity not in visited):
+                  visited.append(minCity)
+                  path.append(minCity)
+                  change =1
+                        #If dead end, pop and renavigate
+            if(change ==0):
                   path.pop()
+            #if that city is not in the visited structure, go there
+            # if(minCity not in visited):
+            #       visited.append(minCity)
+            #       path.append(minCity)
+            #       change ==1
+            
+
+print(visited)
+print(path)
+#       while(path[-1] != end):
+#             change = 0  
+#       # flag to indicate whether any unvisited neighbors were found
+#       # iterate over neighbors of current node
+#             for i in filehandler.Connections[path]
+#                   print(i)
+# #             for x in filehandler.Connections[path[-1]]:
+# #     # if neighbor has not been visited yet, add neighbor to the path
+# #                   if x not in visited:
+# #                         for y in filehandler.Connections[x][0]:
+# #                             print("TESTING: " + x + "\n") 
+# #                         print("Restart")    
+# #                         curr = x
+# #                         visited.append(x)
+# #                         path.append(x)
+# #                         change = 1
+# #                         break 
+#   # if no unvisited neighbors were found, pop current node from the stack
+#             if change == 0:
+#                   path.pop()
                   
                   
 #                   for i in range(0, len(path)-1):
