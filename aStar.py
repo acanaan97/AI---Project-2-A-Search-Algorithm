@@ -12,6 +12,7 @@ temp = helpers.getInput()
 
 start = temp[0]
 end = temp[1]
+curr = start
 
 for x in temp[2]:
     del filehandler.Locations[x] # remove that city from Locations dict
@@ -34,6 +35,7 @@ if (strinput == 'Y' or strinput == 'y'):
 heuristic = {}
 path = []
 visited = []
+
 
 straightLine = False
 temp = input("Do you want to travel by straight line distance? Default is by fewest cities (y/n)\n")
@@ -156,10 +158,48 @@ if(straightLine == True):
             print("Visited Path: ", visited)
             print("Total Path: ",path)
 
-else: # Default is fewest cities
+else: # Default is fewest cities, to find path with fewest cities a dictionary based implementation of Djikstra's Algorithm
+      totalDistance = 0
+      path = [start]
+      visited = [start]
       if stepByStep == True:
-            print("")
-            # output solution step by step
+            curr = start
+            distance = 0
+            while(path[-1] != end):
+                  change = 0
+                  minDistance = 999999
+                  minCity = path[-1]
+                  for i in filehandler.Connections[curr]:
+                        if (i == end):
+                              minCity = i
+                              visited.append(i)
+                              path.append(i)
+                              change = 1
+                              break
+                        if i not in visited:
+                              startingX = int(filehandler.Locations[curr][0]) 
+                              startingY = int(filehandler.Locations[curr][1])
+                              endingX = int(filehandler.Locations[i][0])
+                              endingY = int(filehandler.Locations[i][1])
+                              distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                              if(distance < minDistance):
+                                    minDistance = distance
+                                    minCity = i
+                                    temp = i
+                  totalDistance = totalDistance + distance
+                  if minCity not in visited:
+                        visited.append(minCity)
+                        path.append(minCity)
+                        curr = temp
+                        change = 1
+                  if change == 0:
+                        path.pop()
+
+            print("Total Distance Travelled: ", totalDistance) 
+            print("Visited Path: ", visited)
+            print("Total Path: ",path)
+                  
+                  
       else:
-            print("")
+            print("at non step-bystep")
             # don't output step by step, only final path and distance
