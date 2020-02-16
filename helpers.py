@@ -5,6 +5,16 @@ def Square(x1, x2, y1, y2):
     res = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     return res
 
+def getNext(locations):
+    minCity = ""
+    minDist = 999999
+    for z in locations:
+        if locations[z] < minDist:
+            minDist = locations[z]
+            minCity = z
+    return minCity
+
+
 def getInput():
     blacklist = []
     flag = False
