@@ -156,3 +156,10 @@ if(straightLine == True):
             print("Visited Path: ", visited)
             print("Total Path: ",path)
 
+else: # Default is fewest cities
+      if stepByStep == True:
+            print("")
+            # output solution step by step
+      else:
+            print("")
+            # don't output step by step, only final path and distance
