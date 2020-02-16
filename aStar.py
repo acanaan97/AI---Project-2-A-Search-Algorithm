@@ -175,12 +175,21 @@ else: # Default is fewest cities, to find path with fewest cities a dictionary b
             #Calculate how far away each node is away from the end node in order to find how far away it is
             while (visitedDict): # While not empty
                   visitedDict.pop(starting)
-                  for z in filehandler.Connections[curr]:
-                        currDist = heuristic[curr] + 1
+                  #calculate how far away each node is from the ending node 
+                  for z in filehandler.Connections[starting]:
+                        currDist = heuristic[starting] + 1
                         if z not in heuristic or currDist < heuristic[z]:
                               heuristic[z] = currDist
                               visitedDict[z] = currDist
-                  starting = helpers.getNext(visitedDict)
+                              
+                  #Traverses the graph by going to the city with the smallest distance (BFS search)
+                  minCity = ""
+                  minDist = 999999
+                  for x in visitedDict:
+                        if visitedDict[x] < minDist:
+                              minDist = visitedDict[x]
+                              minCity = x
+                  starting = minCity
             
             #Traverse the map
             while(path[-1] != end):
