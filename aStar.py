@@ -6,7 +6,6 @@ import math
 Open = []
 Closed = []
 
-
 filehandler.init()
 temp = helpers.getInput()
 
@@ -36,7 +35,6 @@ strinput = input("Would you like to search Step-by-Step? Y/N\n")
 if (strinput == 'Y' or strinput == 'y'):
     stepByStep = True
 
-
 straightLine = False
 temp = input("Do you want to travel by straight line distance? Default is by fewest cities (y/n)\n")
 if(temp == "Y" or temp == "y"):
@@ -45,14 +43,17 @@ if(temp == "Y" or temp == "y"):
 if(straightLine == True):
       if(stepByStep == True):
             totalDistance = 0
+            #Calculate the straight line distance of each node from the ending node
             startingX = int(filehandler.Locations[end][0])
             startingY = int(filehandler.Locations[end][1])
+            #Calculate for all of the nodes except 'END'
             for i in filehandler.Locations:
                   if(i != "END"):
                         endingX = int(filehandler.Locations[i][0])
                         endingY = int(filehandler.Locations[i][1])
                         distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
                         heuristic[i] = distance
+                        
             path = [start]
             visited = [start]
 
@@ -97,14 +98,15 @@ if(straightLine == True):
                         visited.append(minCity)
                         path.append(minCity)
                         change =1
-                              #If dead end, pop and renavigate
+                  #If dead end, pop and renavigate
                   if(change ==0):
                         path.pop()
 
             print("Total Distance Travelled: ", totalDistance) 
             print("Visited Path: ", visited)
             print("Total Path: ",path)
-
+      
+      #Same as above without steps^
       else:
             totalDistance = 0
             startingX = int(filehandler.Locations[end][0])
@@ -160,6 +162,68 @@ if(straightLine == True):
 
 else: # Default is fewest cities, to find path with fewest cities a dictionary based implementation of a shortest path algorithm
       if stepByStep == True:
+            path = [start]
+            visited = [start]
+            heuristic[end] = 0
+            starting = end
+            visitedDict = {}
+            
+            #set all distances to infinity essentially
+            for x in filehandler.Locations:
+                  visitedDict[x] = 999999
+
+            #Calculate how far away each node is away from the end node in order to find how far away it is
+            while (visitedDict): # While not empty
+                  visitedDict.pop(starting)
+                  for z in filehandler.Connections[curr]:
+                        currDist = heuristic[curr] + 1
+                        if z not in heuristic or currDist < heuristic[z]:
+                              heuristic[z] = currDist
+                              visitedDict[z] = currDist
+                  starting = helpers.getNext(visitedDict)
+            
+            #Traverse the map
+            while(path[-1] != end):
+                  change = 0
+                  temp = filehandler.Connections[path[-1]] #get all the connections
+                  small = 9999
+                  tempSmallCity = ""
+                  print("Current City: ", path[-1])
+                  for i in temp:
+                        #if the city connects to a destination, stop
+                        if (i == end):
+                              tempSmallCity = i
+                              print(tempSmallCity, " is this the destination!")
+                              visited.append(i)
+                              path.append(i)
+                              change =1
+                              break
+                        #compare the distance
+                        tempValue = heuristic[i]
+                        print(i, " is ", tempValue," steps from the end")
+                        
+                        #if there is a smaller distance, replace the variable with the smaller one
+                        if(tempValue< small):
+                              small = tempValue
+                              tempSmallCity = i
+                  print("City selected: ", tempSmallCity)
+                  
+                  #if it is not visited, add it in
+                  if(tempSmallCity not in visited):
+                        path.append(tempSmallCity)
+                        visited.append(tempSmallCity)
+                        change = 1
+                        
+                  #if you reach a deadend, pop off the path
+                  if(change == 0):
+                        path.pop()
+            print("VISITED: ", visited)
+            print("PATH: ", path)
+      
+      #Same as above^ but without the print statements
+      else:
+            path = [start]
+            visited = [start]
             heuristic[end] = 0
             curr = end
             visitedDict = {}
@@ -175,9 +239,29 @@ else: # Default is fewest cities, to find path with fewest cities a dictionary b
                               visitedDict[z] = currDist
                   curr = helpers.getNext(visitedDict)
             
-      
-
-                                  
-      else:
+            while(path[-1] != end):
+                  change = 0
+                  temp = filehandler.Connections[path[-1]]
+                  small = 9999
+                  tempSmallCity = ""
+                  for i in temp:
+                        if (i == end):
+                              tempSmallCity = i
+                              visited.append(i)
+                              path.append(i)
+                              change =1
+                              break
+                        tempValue = heuristic[i]
+                        if(tempValue< small):
+                              small = tempValue
+                              tempSmallCity = i
+                  if(tempSmallCity not in visited):
+                        path.append(tempSmallCity)
+                        visited.append(tempSmallCity)
+                        change = 1
+                  if(change == 0):
+                        path.pop()
+            print("VISITED: ", visited)
+            print("PATH: ", path)
             print("at non step-bystep")
             # don't output step by step, only final path and distance
