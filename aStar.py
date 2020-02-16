@@ -191,4 +191,35 @@ print("Total Path: ",path)
 #       print(path[i] + " to " + path[i+1] + " length " + "%.2f" %distance)
 #       sum = sum + distance
 
+<<<<<<< Updated upstream
 # print("Total path length %.2f"  %sum)
+=======
+else: # Default is fewest cities
+      if stepByStep == True:
+            distances = {}
+            tempCity = start
+            visited = [tempCity]
+            path = [tempCity]
+            while(tempCity != end):
+                  if(tempCity not in visited):
+                        print("TEMPCITY PRIMIARY: ", tempCity)
+                        connections = filehandler.Connections[tempCity]
+                        startingX = int(filehandler.Locations[tempCity][0])
+                        startingY = int(filehandler.Locations[tempCity][1])
+                        for i in connections:
+                              endingX = int(filehandler.Locations[i][0])
+                              endingY = int(filehandler.Locations[i][1])
+                              distance = math.sqrt((startingX-endingX)**2+(startingY-endingY)**2)
+                              distances[i] = distance
+                        distances = sorted(distances, key=lambda i: int(distances[i]))
+                        listofCities = list(distances)
+                        tempCity = listofCities[0]
+                        print("TEMPCITY SECONDARY: ",tempCity)
+                        visited.append(tempCity)
+                        path.append(tempCity)
+            print("Path: ", path)
+            # output solution step by step
+      else:
+            print("")
+            # don't output step by step, only final path and distance
+>>>>>>> Stashed changes
