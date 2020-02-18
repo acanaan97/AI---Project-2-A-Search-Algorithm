@@ -30,6 +30,13 @@ if end not in filehandler.Locations:
       print("Destination does not exist in possible locations, you may have removed the destination from search list (intentionally, no doubt).")
       exit(0)
 
+if not filehandler.Connections[start]:
+  print("Starting city is disconnected, try again with a connected city\n")
+  exit(0)
+elif not filehandler.Connections[end]:
+  print("Ending city is disconnected, try again with a connected city\n")
+  exit(0)
+
 stepByStep = False
 strinput = input("Would you like to search Step-by-Step? Y/N\n") 
 if (strinput == 'Y' or strinput == 'y'):
@@ -246,7 +253,7 @@ else: # Default is fewest cities, to find path with fewest cities a dictionary b
                         if z not in heuristic or currDist < heuristic[z]:
                               heuristic[z] = currDist
                               visitedDict[z] = currDist
-                  curr = helpers.getNext(visitedDict)
+                  #curr = helpers.getNext(visitedDict)
             
             while(path[-1] != end):
                   change = 0
