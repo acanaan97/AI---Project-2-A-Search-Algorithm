@@ -297,5 +297,4 @@ else: # Default is fewest cities, to find path with fewest cities a dictionary b
                         path.pop()
             print("VISITED: ", visited)
             print("PATH: ", path)
-            print("at non step-bystep")
             # don't output step by step, only final path and distance
