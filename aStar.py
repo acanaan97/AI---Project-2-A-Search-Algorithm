@@ -30,12 +30,13 @@ if end not in filehandler.Locations:
       print("Destination does not exist in possible locations, you may have removed the destination from search list (intentionally, no doubt).")
       exit(0)
 
-if not filehandler.Connections[start]:
-  print("Starting city is disconnected, try again with a connected city\n")
-  exit(0)
-elif not filehandler.Connections[end]:
-  print("Ending city is disconnected, try again with a connected city\n")
-  exit(0)
+#checks to see if there is no connections to a city
+for i in filehandler.Connections:
+      if(filehandler.Connections[i]):   
+            continue
+      else:
+            print("Can't connect to that a city")
+            exit(0)
 
 stepByStep = False
 strinput = input("Would you like to search Step-by-Step? Y/N\n") 
@@ -241,19 +242,36 @@ else: # Default is fewest cities, to find path with fewest cities a dictionary b
             path = [start]
             visited = [start]
             heuristic[end] = 0
-            curr = end
+            starting = end
             visitedDict = {}
             for x in filehandler.Locations:
                   visitedDict[x] = 999999
 
             while (visitedDict): # While not empty
-                  visitedDict.pop(curr)
-                  for z in filehandler.Connections[curr]:
-                        currDist = heuristic[curr] + 1
+                  visitedDict.pop(starting)
+                  #calculate how far away each node is from the ending node 
+                  for z in filehandler.Connections[starting]:
+                        currDist = heuristic[starting] + 1
                         if z not in heuristic or currDist < heuristic[z]:
                               heuristic[z] = currDist
                               visitedDict[z] = currDist
-                  #curr = helpers.getNext(visitedDict)
+                              
+                  #Traverses the graph by going to the city with the smallest distance (BFS search)
+                  minCity = ""
+                  minDist = 999999
+                  for x in visitedDict:
+                        if visitedDict[x] < minDist:
+                              minDist = visitedDict[x]
+                              minCity = x
+                  starting = minCity
+            # while (visitedDict): # While not empty
+            #       visitedDict.pop(curr)
+            #       for z in filehandler.Connections[curr]:
+            #             currDist = heuristic[curr] + 1
+            #             if z not in heuristic or currDist < heuristic[z]:
+            #                   heuristic[z] = currDist
+            #                   visitedDict[z] = currDist
+            #       curr = helpers.getNext(visitedDict)
             
             while(path[-1] != end):
                   change = 0
